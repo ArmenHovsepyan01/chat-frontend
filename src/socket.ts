@@ -1,4 +1,10 @@
 import { io } from 'socket.io-client';
 
 const url = import.meta.env.VITE_CHAT_WS;
-export const socket = io(url);
+const socket = io(url);
+
+socket.on('connection', (socket) => {
+  console.log(socket.id, 'connected');
+});
+
+export default socket;
