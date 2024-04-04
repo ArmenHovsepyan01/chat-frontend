@@ -1,4 +1,4 @@
-import { Message } from '../../types/types.ts';
+import { Message } from '../../../types/types.ts';
 import { FC } from 'react';
 
 interface IMessage {

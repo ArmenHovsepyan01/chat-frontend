@@ -1,19 +1,17 @@
 import Layout from '../../layout/Layout.tsx';
-import Container from '../../components/container/Container.tsx';
+import Container from '../../components/ui/container/Container.tsx';
 
-import { useRef, useState } from 'react';
-
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
-
-  const userNameInputRef = useRef<HTMLInputElement>(null);
-
   const [error, setError] = useState('');
 
-  const connectToRoom = () => {
-    const userName = userNameInputRef?.current?.value;
+  const connectToRoom = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const userName = event.target.elements.userName.value;
 
     if (!userName) return setError('Please type your name.');
 
@@ -22,7 +20,7 @@ const Home = () => {
     navigate('/chat');
   };
 
-  const resetError = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const resetError = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (event.target.value && error) {
       setError('');
     }
@@ -35,10 +33,13 @@ const Home = () => {
           <span className={'text-center font-bold text-2xl text-blue-500 my-5'}>
             Welcome to Chat!
           </span>
-          <div className={'flex flex-col gap-3  p-2 rounded  justify-between'}>
+          <form
+            className={'flex flex-col gap-3  p-2 rounded  justify-between'}
+            onSubmit={connectToRoom}>
+            <span className={'text-center'}>What's your name?</span>
             <input
+              id={'userName'}
               type={'text'}
-              ref={userNameInputRef}
               placeholder={'Type your name'}
               className={'border rounded p-1 focus:outline-blue-700'}
               onChange={resetError}
@@ -46,10 +47,10 @@ const Home = () => {
 
             {error && <span className={'text-red-500 text-sm'}>{error}</span>}
 
-            <button className={'bg-gray-600 text-white p-2 rounded '} onClick={connectToRoom}>
+            <button className={'bg-gray-600 text-white p-2 rounded '} type={'submit'}>
               Connect to room
             </button>
-          </div>
+          </form>
         </div>
       </Container>
     </Layout>

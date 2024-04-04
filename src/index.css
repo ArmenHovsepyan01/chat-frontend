@@ -8,6 +8,21 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./fonts/icomoon.woff') format('woff2');
+}
+
 body {
   font-size: 18px;
+}
+
+.icon-send:before {
+  font-family: "CustomFont", sans-serif;
+  content: "\e900";
+}
+
+.icon-plus-alt:before {
+  font-family: "CustomFont", sans-serif;
+  content: "\e901";
 }
