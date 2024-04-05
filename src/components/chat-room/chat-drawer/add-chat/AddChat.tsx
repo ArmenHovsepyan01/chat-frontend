@@ -1,11 +1,15 @@
-import { useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import Modal from '../../../ui/modal/Modal.tsx';
-import axios from 'axios';
+import { FC, useState } from 'react';
 
-const AddChat = () => {
+import Modal from '../../../ui/modal/Modal.tsx';
+
+import { IChat } from '../../../../types/types.ts';
+
+interface IAddChat {
+  addChat: (item: IChat) => void;
+}
+
+const AddChat: FC<IAddChat> = ({ addChat }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const createChatInputRef = useRef<HTMLInputElement | null>(null);
 
   const openModal = () => {
     setIsOpen(true);
@@ -13,21 +17,6 @@ const AddChat = () => {
 
   const closeModal = () => {
     setIsOpen(false);
-  };
-
-  const createChat = async () => {
-    try {
-      if (createChatInputRef.current?.value) {
-        const { data } = await axios.post(`${import.meta.env.VITE_SERVER_URI}/rooms`, {
-          name: createChatInputRef.current.value
-        });
-
-        console.log(data);
-        closeModal();
-      }
-    } catch (e: any) {
-      throw new Error(e);
-    }
   };
 
   return (
@@ -38,11 +27,7 @@ const AddChat = () => {
       onClick={openModal}>
       Add room
       <span className={'icon-plus-alt'}></span>
-      {isOpen &&
-        createPortal(
-          <Modal createChat={createChat} closeModal={closeModal} ref={createChatInputRef} />,
-          document.getElementById('portal') as HTMLElement
-        )}
+      {isOpen && <Modal addChat={addChat} closeModal={closeModal} />}
     </div>
   );
 };

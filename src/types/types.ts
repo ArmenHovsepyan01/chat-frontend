@@ -7,9 +7,10 @@ export interface Message {
   roomId: string;
   message: string;
   createdAt: Date;
+  type: 'message' | 'pinned';
 }
 
-export interface Chat {
+export interface IChat {
   _id: string;
   name: string;
 }
